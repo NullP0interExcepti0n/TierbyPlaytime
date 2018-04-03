@@ -1,10 +1,13 @@
 import tensorflow as tf
+import numpy as np
 
-playTime = [2000, 3822, 3580, 2465, 1046]
-rank = [200000-5000, 200000-720, 200000-1452, 2000000-480995, 2000000-124625]
+data = np.loadtxt('./data.csv', delimiter=',', unpack=True, dtype='float32')
 
-W = tf.Variable(tf.random_uniform([1], 0.01, 1500))
-b = tf.Variable(tf.random_uniform([1], 100, 10000))
+playTime = np.transpose(data[0])
+rank = np.transpose(data[1])
+
+W = tf.Variable(tf.random_uniform([1], 0, 20000))
+b = tf.Variable(tf.random_uniform([1], 1, 2000000))
 
 X = tf.placeholder(tf.float32, name = "X")
 Y = tf.placeholder(tf.float32, name = "Y")
@@ -23,6 +26,4 @@ with tf.Session() as sess:
 		print(step, cost_val, sess.run(W), sess.run(b))
 
 	print("\n=== Test ===")
-	print("X:3000, Y:", sess.run(2000000 - hypothesis, feed_dict={X: 3000}))
-	print("X:2800, Y:", sess.run(2000000 - hypothesis, feed_dict={X:2800}))
-	print("X:2500, Y:", sess.run(2000000 - hypothesis, feed_dict={X:2500}))
+	print("Play Time : 2100hrs, Rank :", sess.run(hypothesis, feed_dict={X: 2100}))
